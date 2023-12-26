@@ -1,0 +1,106 @@
+class Mobiles(models.Model):
+    name=models.CharField(max_length=200,unique=True)
+    price=models.PositiveIntegerField()
+    brand=models.CharField(max_length=200)
+    specs=models.CharField(max_length=200)
+    display=models.CharField(max_length=200)
+
+
+    orm querreys:
+
+    modelname.objects.create(filedname=value,....)
+
+    eg: orm q for creating an
+
+    frist run python manage.py shell
+    then run below
+
+
+    from mobile.models import Mobiles
+    Mobiles.objects.create(name="samsung m31",price=24000,specs="12gb ram",display="amolqaud",brand="samsung")
+    Mobiles.objects.create(name="i phone 14 pro",price=780000,specs="6gb ram",display="XDR",brand="apple")
+
+    Mobiles.objects.create(name="OnePlus 11",price=48000,specs="6gb ram",display="AMOLED",brand="OnePlus")
+    Mobiles.objects.create(name="xiaomi 13 pro",price=34000,specs="6gb ram",display="OLED",brand="xiaomi")
+
+Mobiles.objects.create(name="samsung galaxy zflip",price=73000,specs="12gb ram",display="AMOLED",brand="samsung")
+
+--------------------------------------
+
+  orm querry for getting all objects
+
+  in genrl- modelname.object.all()
+  here qs=Mobiles.objects.all()
+
+  qs is just a var
+
+  ----------------------------------------
+
+  for gettia specific object using id ,the orm querry is,
+
+  qs=modelname.objects.get(id=2)
+
+  here qs=Mobiles.objects.get(id=2)
+
+  ------------------------------------------------
+
+  filetrig objects using conditions,
+
+  modelname.objects.filtermethod(condition)
+
+  eg- qs=Mobiles.objects.filter(brand="samsung")
+
+  --------------------------------------------
+  print all mob less than 25000
+
+   qs=Mobiles.objects.filter(price__lte=25000) 
+
+   lte- lsthan or equal
+
+   feild lookup:
+   <= :   __lte
+   >= :   __gte
+   < :    __lt
+   > :    __gt
+
+   price greater than 100000
+
+   qs=Mobiles.objects.filter(price__gt=100000)
+
+   ------------------------------
+
+   print all mobiles other than samsung brand / or exclude samsung
+
+   qs=Mobiles.objects.exclude(brand="samsung")
+
+
+   ------------------------
+   orm querry for deleting an object
+   
+   qs=Mobiles.objects.filtere(id=3).delete()
+
+
+   ---------------------
+   orm querryfor update
+
+  Mobiles.objects.filter(id=2).update(price=120000)
+
+  --------------
+  orm querry for sort
+
+  qs=Mobiles.objects.all().order_by("price") --ASCENDING
+
+  qs=Mobiles.objects.all().order_by("-price")  --DESCENDING
+
+  ---------------------
+
+  to select one column
+    here for brands
+
+  qs=Mobiles.objects.all().values("brand")
+  qs=Mobiles.objects.all().values_list("brand")
+  #to get all brands,
+  qs=Mobiles.objects.all().values_list("brand",flat=True)
+
+  
+
