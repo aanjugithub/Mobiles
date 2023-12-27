@@ -2,25 +2,49 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from mobile.models import Mobiles
+from api.serializer import MobileSerializer
 
 # Create your views here.
 
 class MobileListCreateView(APIView):
     def get(self,request,*args,**kwargs):
-        return Response(data={"message":"Mobile list view impl"})
+        qs=Mobiles.objects.all()
+        #deserialization (querry to py native)
+        serializer=MobileSerializer(qs,many=True) #many=true bcz qwe have more than 1 datas in data variable thats y
+        return Response(data=serializer.data)
     
     def post(self,request,*args,**kwargs):
-        return Response(data={"message":"mobile list post"})
+        serializer=MobileSerializer(data=request.data) #serialization
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+
 
 #localhoost 8000/api/mobiles/{id}  
       
 class MobileDetailUpdateDestroyView(APIView):
     
     def get(self,request,*args,**kwargs):
-        return Response(data={"message":"get deatil of a specific item"})
+        id=kwargs.get("pk")
+        qs=Mobiles.objects.get(id=id)
+        serializer=MobileSerializer(qs) #deser
+        return Response(data=serializer.data)
     
     def put(self,request,*args,**kwargs):
-        return Response(data={"message":"update an item"})
-    
+        id=kwargs.get("pk")
+        mobile_object=Mobiles.objects.get(id=id)
+        serializer=MobileSerializer(data=request.data,instance=mobile_object)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+        
     def delete(self,request,*args,**kwargs):
-        return Response(data={"message":"delete selected item"})
+        id=kwargs.get("pk")
+        Mobiles.objects.get(id=id).delete()
+        return Response(data={"message":"data deleted"})
+    
